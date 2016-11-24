@@ -1,17 +1,23 @@
 cmake_minimum_required (VERSION 2.8)
 
 find_package(OpenGL REQUIRED)
-find_package(GLUT)
 
-if(MSVC AND (NOT GLUT_FOUND))
-	find_library(GLUT glut
-	    PATHS "${CMAKE_SOURCE_DIR}/lib" "${CMAKE_SOURCE_DIR}/lib/win32")
-
-	find_library(GLUT32 glut32
-	    PATHS "${CMAKE_SOURCE_DIR}/lib" "${CMAKE_SOURCE_DIR}/lib/win32")
-
-	set(GLUT_LIBRARIES ${GLUT32} ${GLUT})
-	message(${GLUT_LIBRARIES})
+if(MSVC)
+	find_package(GLUT QUIET)
+	if(NOT GLUT_FOUND)
+		set(GLUT_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/contrib/freeglut/include")
+		if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+			set(GLUT_LIBRARIES "${CMAKE_SOURCE_DIR}/contrib/freeglut/lib/x64/freeglut.lib")
+			file(COPY "${CMAKE_SOURCE_DIR}/contrib/freeglut/bin/x64/freeglut.dll"
+		    	DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+		else()
+			set(GLUT_LIBRARIES "${CMAKE_SOURCE_DIR}/contrib/freeglut/lib/freeglut.lib")
+			file(COPY "${CMAKE_SOURCE_DIR}/contrib/freeglut/bin/freeglut.dll"
+		    	DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+		endif()
+	endif()
+else()
+	find_package(GLUT REQUIRED)
 endif()
 
 if(WIN32)
@@ -26,7 +32,7 @@ file(GLOB COMMON_DEMO_SOURCE
 	${CMAKE_SOURCE_DIR}/src/demos/*.cpp
 )
 
-set(COMMON_DEMO_INCLUDE "${CMAKE_SOURCE_DIR}/include" "${CMAKE_SOURCE_DIR}/src/demos")
+set(COMMON_DEMO_INCLUDE "${GLUT_INCLUDE_DIR}" "${CMAKE_SOURCE_DIR}/include" "${CMAKE_SOURCE_DIR}/src/demos")
 set(COMMON_DEMO_LIBS ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} ${PLATFORM_LIBRARIES})
 
 if(MSVC)
