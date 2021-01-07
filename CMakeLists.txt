@@ -1,19 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
-
 project(cyclone-physics)
 
-option(UPDATE_PACKAGED_EXECUTABLES "Set to on to update the executables under ${CMAKE_SOURCE_DIR}/bin/" OFF)
-if(UPDATE_PACKAGED_EXECUTABLES)
-	if(WIN32)
-		set(PLATFORM_BIN_SUFFIX "win32")
-	else()
-		set(PLATFORM_BIN_SUFFIX "unix")
-	endif()
+set(OPENGL_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/lib/win32/)
 
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${PLATFORM_BIN_SUFFIX}/)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin/${PLATFORM_BIN_SUFFIX}/)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/${PLATFORM_BIN_SUFFIX}/)
-endif()
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/mybin/)
 
 add_subdirectory(src)
 
