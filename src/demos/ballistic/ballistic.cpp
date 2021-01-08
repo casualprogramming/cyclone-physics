@@ -127,6 +127,7 @@ void BallisticDemo::fire()
     // Set the properties of the particle
     switch(currentShotType)
     {
+        //[@My review]: Although damping is being used, it does not stop because acceleration is not damped.
     case PISTOL:
         shot->particle.setMass(2.0f); // 2.0kg
         shot->particle.setVelocity(0.0f, 0.0f, 35.0f); // 35m/s
