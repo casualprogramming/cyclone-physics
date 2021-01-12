@@ -363,6 +363,9 @@ void FireworksDemo::create(unsigned type, const Firework *parent)
 
     // Increment the index for the next firework
     nextFirework = (nextFirework + 1) % maxFireworks;
+    //[@My review]: If space is insufficient, it is just overwritten from the front.
+    //Priority for the new: erase old and create
+    //Priority for the old: don't create when insufficient
 }
 
 void FireworksDemo::create(unsigned type, unsigned number, const Firework *parent)
